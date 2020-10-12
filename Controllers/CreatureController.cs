@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Heroes_3_Creatures.Data;
 using Heroes_3_Creatures.Dtos;
 using Heroes_3_Creatures.Models;
 using Microsoft.AspNetCore.Mvc;
