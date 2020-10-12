@@ -9,7 +9,7 @@ namespace Heroes_3_Creatures
 {
     public class CreaturesContext : DbContext
     {
-        public CreaturesContext(DbContextOptions<CreaturesContext> opt) : base(opt)
+        public CreaturesContext(DbContextOptions<CreaturesContext> options) : base(options)
         {
             
         }

@@ -16,38 +16,29 @@ namespace Heroes_3_Creatures.Data
             _context = context;
         }
 
-        public IEnumerable<Creature> GetAllCreatures()
+        public IEnumerable<Creature> Get(int? id, int? tier, string name, string fractionName)
         {
             IEnumerable<Creature> creatures = _context.Creatures
-                .Include(c => c.Fraction)
-                .Include(c => c.ResourceCosts)
-                    .ThenInclude(rc => rc.Resource)
-                .Include(c => c.CreatureAbilities)
-                    .ThenInclude(ca => ca.Ability);
-            return creatures;
-        }
-
-        public Creature GetCreatureById(int id)
-        {
-            //no idea why this needs so many more includes than GetAllCreatures, but without them it completely skips all the nestings related to "upgraded from"
-            Creature creature = _context.Creatures
-                .Include(c=>c.UpgradedFrom)
-                    .ThenInclude(uf=>uf.CreatureAbilities)
+                .Include(c => c.UpgradedFrom)
+                    .ThenInclude(uf => uf.CreatureAbilities)
                 .Include(c => c.UpgradedFrom)
                     .ThenInclude(uf => uf.ResourceCosts)
                 .Include(c => c.UpgradedFrom)
                     .ThenInclude(uf => uf.UpgradedFrom)
-                        .ThenInclude(ufuf=>ufuf.CreatureAbilities)
+                        .ThenInclude(ufuf => ufuf.CreatureAbilities)
                 .Include(c => c.UpgradedFrom)
                     .ThenInclude(uf => uf.UpgradedFrom)
                         .ThenInclude(ufuf => ufuf.ResourceCosts)
-                .Include(c=>c.Fraction)
+                .Include(c => c.Fraction)
                 .Include(c => c.ResourceCosts)
                     .ThenInclude(rc => rc.Resource)
                 .Include(c => c.CreatureAbilities)
                     .ThenInclude(ca => ca.Ability)
-                .FirstOrDefault(c => c.Id == id);
-            return creature;
+                .Where(c => !id.HasValue || c.Id == id)
+                .Where(c => !tier.HasValue || c.Tier == tier)
+                .Where(c => name == null || c.Name == name)
+                .Where(c => fractionName == null || c.Fraction.Name == fractionName);          
+            return creatures;
         }
     }
 }

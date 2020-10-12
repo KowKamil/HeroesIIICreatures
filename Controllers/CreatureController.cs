@@ -25,7 +25,23 @@ namespace Heroes_3_Creatures.Controllers
             _mapper = mapper;
         }
 
+
         [HttpGet]
+        public ActionResult<IEnumerable<CreatureReadDto>> Get(int? id, int? tier, string name, string fractionName)
+        {
+            var creatures = _creaturesRepo.Get(id, tier, name, fractionName);
+
+            if (creatures != null)
+            {
+                return Ok(_mapper.Map<IEnumerable<CreatureReadDto>>(creatures)); //Automapper
+                //return Ok(creatures.Select(c=>c.MapCreatureToDto())); //manual map
+                //return Ok(creatures); //no mapping
+            }
+            else
+                return NotFound();
+        }
+
+        /*[HttpGet]
         public ActionResult <IEnumerable<CreatureReadDto>> GetAll()
         {
             var creatures = _creaturesRepo.GetAllCreatures();
@@ -51,6 +67,6 @@ namespace Heroes_3_Creatures.Controllers
                 //return Ok(creature); //no mapping
             else
                 return NotFound();
-        }
+        }*/
     }
 }

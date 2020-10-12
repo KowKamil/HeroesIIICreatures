@@ -8,7 +8,6 @@ namespace Heroes_3_Creatures
 {
     public interface ICreaturesRepo
     {
-        IEnumerable<Creature> GetAllCreatures();
-        Creature GetCreatureById(int id);
+        IEnumerable<Creature> Get(int? id, int? tier, String name, String fraction);
     }
 }
